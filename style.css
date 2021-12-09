@@ -1,0 +1,138 @@
+body{
+    background-color: white;
+    font-family: 'Lato', sans-serif; ;
+    font-size: 18px ;
+    font-weight:400 ;
+    line-height: 1.2;
+}
+.header {
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    width: 100%;
+    margin: 0 auto;
+}
+.header-logo {
+    display: block;
+    width: 268px;
+    height: 93px;
+    }
+.main {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 20px;
+}
+.search{
+    width: 90%;
+}
+input{
+    background-color: transparent !important;
+    border: none;
+    position: relative;
+    left: 22px;
+}
+.input-group {
+    height: 69px;
+    display: flex; 
+    align-items: center;
+    width: 100%;
+    margin-bottom: 1.5625rem;
+    border-radius:5px;
+    background-color: #E7E7E7;
+}
+.form-control {
+    flex-grow: 2;
+}
+.form-label {
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+
+    height:  22px;
+    
+}
+.form-label svg {
+    position: relative;
+    right: 22px;
+    width: 32,06px; 
+    height: 32,06px;
+}
+.search {
+    width: 100%;
+}
+.search-tags {
+    width: 100%;
+    display: flex; 
+    flex-wrap: wrap;
+    padding-bottom: 23px;
+}
+.search-filters {
+    width: 100%;
+    display: flex;
+    margin-bottom: 25px;
+}
+.combobox {
+    position: relative;
+    display: flex;
+    width: 170px; 
+    height: 69px;
+    border-radius: 5px;
+    transition: width .2s ease-in-out;
+    margin-right: 20px;
+}
+.combobox.combobox-primary, .primary {
+    background-color: #3282F7;
+}
+.combobox.combobox-success, .success{
+    background-color: #68D9A4;
+}
+.combobox.combobox-danger, .danger{
+    background-color: #ED6454;
+}
+.combobox-wrapper {
+    position: absolute; 
+    top: 0;
+    right: 0; 
+    left: 0;
+    display: flex; 
+    flex-direction: column;
+    padding: 23px 15px;
+    height: auto;
+    color: white;
+}
+.combobox-control{
+    flex-shrink: 0;
+    display: flex; 
+    align-items: center;
+    width: 100%; 
+    height: 32.06px;
+}
+.combobox-control-label{
+    flex-grow: 1;
+    font-weight:700;
+}
+.combobox-control-input{
+    flex-grow: 1;
+    outline: none;
+    font-weight: 700;
+}
+.combobox-control-expand{
+    flex-shrink: 0;
+    border: none;
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    width: 32px; 
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform .3s ease-in-out;
+    transform: rotate(0);
+}
+.combobox-control-expand svg {
+    width: 16px; 
+    height: 9.88px;
+}
