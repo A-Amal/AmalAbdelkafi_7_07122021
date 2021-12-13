@@ -34,6 +34,9 @@ input{
     position: relative;
     left: 22px;
 }
+input::after{
+    border: none;
+}
 .input-group {
     height: 69px;
     display: flex; 
@@ -74,6 +77,8 @@ input{
     display: flex;
     margin-bottom: 25px;
 }
+/*css filtre
+*/
 .combobox {
     position: relative;
     display: flex;
@@ -135,4 +140,62 @@ input{
 .combobox-control-expand svg {
     width: 16px; 
     height: 9.88px;
+}
+/*css Card recipes
+*/
+.recipes{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.card {
+    display: flex;
+    flex-direction: column;
+    height: 380px;
+    width: 380px;
+    margin-bottom: 50px;
+    border-radius: 5px;
+    background-color:#E7E7E7
+}
+.card-picture{
+   width: 100%; 
+   min-height: 178px;
+   border-radius: 5px 5px 0 0;
+   background-color: #C7BEBE ;
+}
+.card-header{
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between; 
+   font-size: 18px;
+   margin: 20px 20px 0 20px;
+   
+ }
+ .card-header-title{
+    font-weight: 400;
+    width: 70%;
+ }
+ .card-header-time{
+    font-weight: 700;
+    width: 30%;
+    text-align: end;
+}
+ .card-body{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around; 
+    font-size: 12px;
+    margin:10px 20px;
+    
+}
+.card-body-ingredients{
+    font-weight: 400;
+    width: 50%;
+   
+}
+.card-body-recipe{
+    font-weight: 400;
+    width: 50%;
+    margin-left: 5px;
 }
