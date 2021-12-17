@@ -34,7 +34,7 @@ input{
     position: relative;
     left: 22px;
 }
-input::after{
+input:focus{
     border: none;
 }
 .input-group {
@@ -91,6 +91,9 @@ input::after{
 .combobox.combobox-primary, .primary {
     background-color: #3282F7;
 }
+.combobox.active:not(.expanded) {
+    width: 667px;
+  }
 .combobox.combobox-success, .success{
     background-color: #68D9A4;
 }

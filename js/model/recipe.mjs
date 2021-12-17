@@ -1,5 +1,5 @@
 import Ingredient  from "./ingredient.mjs";
-
+import Tag from "./tag.mjs";
 export default class Recipe{
 
     constructor(data){
@@ -22,6 +22,11 @@ export default class Recipe{
         if (this.description.length <= limit) return this.description;
         let description = this.description.substr(0, limit - 1);
         return description.substr(0, description.lastIndexOf(" ")) + " &hellip;";
+    }
+    tagAvailable (tag) {
+        if (tag.type == 'ingredients') return this.ingredients.find((ingredient) => ingredient.name == tag.name);
+        if (tag.type == 'ustensils') return this.ustensils.includes(tag.name);
+        if (tag.type == 'appliances') return this.appliance == tag.name;
     }
 
     /**
