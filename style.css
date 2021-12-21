@@ -5,6 +5,12 @@ body{
     font-weight:400 ;
     line-height: 1.2;
 }
+ul, ol, li {
+  margin: 0;
+  padding: 0;
+  text-indent: 0;
+  list-style: none;
+}
 .header {
     display: flex; 
     justify-content: center; 
@@ -107,10 +113,23 @@ input:focus{
     left: 0;
     display: flex; 
     flex-direction: column;
-    padding: 23px 15px;
+    padding: 23px 15px ;
     height: auto;
     color: white;
+    border-radius: 5px;
 }
+.combobox-primary .combobox-wrapper {
+    background-color: #3282F7;
+  }
+  .combobox-danger .combobox-wrapper {
+    background-color: #ED6454;
+  }
+  .combobox-success .combobox-wrapper {
+    background-color: #68D9A4;
+  }
+  .combobox.expanded-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+  }
 .combobox-control{
     flex-shrink: 0;
     display: flex; 
@@ -126,7 +145,12 @@ input:focus{
     flex-grow: 1;
     outline: none;
     font-weight: 700;
+    font-size: 18px;
+    color: white;
+    opacity: 0.9;
+    color: white !important;
 }
+
 .combobox-control-expand{
     flex-shrink: 0;
     border: none;
@@ -144,6 +168,54 @@ input:focus{
     width: 16px; 
     height: 9.88px;
 }
+.combobox-results {
+    display: flex;
+    flex-direction: row;
+    flex-wrap:wrap ;
+    padding-bottom: 0.9375rem;
+    margin-right: -0.9375rem;
+    max-height: 19.5rem;
+    overflow-y: auto;
+    gap: 0.625rem;
+  }
+  .combobox.expanded .combobox-results {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .combobox-results::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5rem;
+  }
+  .combobox-results::-webkit-scrollbar-thumb {
+    border-radius: 0.25rem;
+  }
+  .combobox-results::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .combobox-results::-webkit-scrollbar-thumb:hover {
+    border-radius: 10px;
+    border-width: 1px;
+    background: #FFFFFF;
+  }
+  .combobox-primary .combobox-results::-webkit-scrollbar-thumb {
+    border: 1px solid #3282F7;
+    background: #1570f6;
+  }
+  .combobox-danger .combobox-results::-webkit-scrollbar-thumb {
+    border: 1px solid #ED6454;
+    background: #ea4b38;
+  }
+  .combobox-success .combobox-results::-webkit-scrollbar-thumb {
+    border: 1px solid #68D9A4;
+    background: #50d395;
+  }
+  .combobox-results li {
+    width: 30%;
+    cursor: pointer;
+    font-family: Lato;
+    font-size: 18px;
+    font-weight: 400;
+    opacity: 0.9;
+  }
 /*css Card recipes
 */
 .recipes{

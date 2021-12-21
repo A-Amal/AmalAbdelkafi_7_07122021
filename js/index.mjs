@@ -1,6 +1,6 @@
 import Recipe from "./model/recipe.mjs";
 import recipesData from "./recipes.mjs";
-import tag from "./model/tag.mjs";
+import Tag from "./model/tag.mjs";
 import DomFilter from "./model/domFilter.mjs";
 
 
@@ -10,6 +10,15 @@ async function fetchData(recipesData) {
         recipesTab.push(new Recipe(recipeData))
     });
     return recipesTab
+}
+function  renderTags () {
+    const domTags=document.querySelector('[data-filter-tags]')
+    domTags.innerHTML = '';
+    stateTags.forEach((tag) => {
+        const elTag = tag.renderTag(tagsClasses[tag.type]);
+        elTag.querySelector('button').addEventListener('click', (e) => removeTag(tag));// Remove tag on click
+        domTags.append(elTag);
+    });
 }
 function renderRecipes(tab) {
     const recipesDom = document.querySelector(".recipes")
@@ -26,7 +35,7 @@ function renderRecipes(tab) {
 }
  
 function filterSearch(recipes) {
-    // Search into name, description, appliance, ingredients name, ustensils
+    // Search into name, description, appliances, ingredients name, ustensils
     //const t0 = performance.now(), q = recipes.length;
     const term = search.value.toLowerCase();
     console.log(term)
@@ -37,7 +46,7 @@ function filterSearch(recipes) {
         if (recipe.description.toLowerCase().includes(term)) {
             return true;
         }
-        if (recipe.appliance.includes(term)) {
+        if (recipe.appliances.includes(term)) {
             return true;
         }
         if (!!recipe.ingredients.find((ingredient) =>ingredient.ingredient.includes(term))) {
@@ -51,24 +60,36 @@ function filterSearch(recipes) {
     //const t1 = performance.now(); console.log(`Search time ${t1 - t0} ms | ${(t1 - t0) / q} per recipe`);
     return recipes;
 }
-function applyFilterRecipes (recipes, filter) {
+function  filterTags(recipes, stateTags) {
+    stateTags.forEach((tag) => {
+        recipes = recipes.filter((recipe) => recipe.tagAvailable(tag));
+    });
+    return recipes;
+}
+
+function applyFilterRecipes (recipes, tags, stateTags) {
+    console.log(tags)
     let filtered = [];
     if (search.value.length < 3) filtered = recipes;
     else filtered = filterSearch(recipes);// Search filter
-    this.checkStateTags(filtered);// Clear invalid active tags
-    filtered = filterTags(filtered);// Tags filter
-    updateAvailableTags(filtered);
-    if (filter) renderFilter();// Rerender on active
+    checkStateTags (filtered, tags, stateTags)
+    // Clear invalid active tags
+    console.log(stateTags)
+    //filtered = filterTags(filtered, stateTags);// Tags filter
+    console.log(tags)
+    //updateAvailableTags(filtered, tags);
+    //if (filter) renderFilter();// Rerender on active
     return filtered;
 }
-function activeIn (filter) {
+function activeIn (filtred, filter, tags, stateTags) {
     activeOut(filter);// Close active filter
     console.log(filter)
     filter.container.classList.add('active');
     filter.label.style.display = 'none';
     filter.input.style.display = '';
     filter.input.focus();
-    renderFilter(filter);
+    console.log(tags)
+    renderFilter(filtred, filter, tags, stateTags);
 }
 function activeOut (filter, e) {
     filter.container.classList.remove('active');
@@ -78,35 +99,97 @@ function activeOut (filter, e) {
     filter.input.value = "";
     filter.results.style.display = 'none';
 }
-function toggle (filter) {
-    if (!filter) activeIn(filter);// Not active do it
+function toggle (filter, tags) {
+    if (!filter) activeIn(filter, tags);// Not active do it
     // Toggle visual expanded state
     filter.container.classList.toggle('expanded');
     // Focus input on open
     if (filter.container.classList.contains('expanded')) filter.input.focus();
 }
-function  renderFilter (filter) {
-    const filteredRecipes = []; 
-    const filterTypes = ['ingredients', 'appliances', 'ustensils'];
+function renderFilter(filtred, filter, tags, stateTags) {
     //const filter = this.stateFilter; // Shortcut
     filter.results.style.display = 'none';
     filter.results.innerHTML = '';// Clean container
-    this.tags[filter.name].forEach((item) => {
-        const tag = new Tag(item, filter.name)
-        if (this.tagIsActive(tag)) return;// Escape active tags
-        if (filter.input.value.length > 0 && !tag.name.includes(filter.input.value.toLowerCase())) return;// Escape search result
-        const elTag = tag.renderLi();
-        elTag.addEventListener('click', (e) => {// Add tag on click
-            e.stopPropagation();
-            this.addTag(tag);
+    filtred.forEach((item) => {
+        let filterNames = filter.name;
+        let name;
+        item[filterNames].forEach(elemnt => {
+            let filterName = filterNames.substring(0, filterNames.length - 1)
+            if (filterName == "ingredient") { 
+                if(!tags[filterNames].includes(elemnt[filterName])){
+                    name =elemnt[filterName];
+                    tags[filterNames].push(elemnt[filterName])
+                    stateTags.push(elemnt[filterName]);
+                    const tag = new Tag(name, filter.name);
+                    const elTag = tag.renderLi();
+                    if (filter.input.value.length > 0 && !tag.name.includes(filter.input.value.toLowerCase())) return;// Escape search result
+                    elTag.addEventListener('click', (e) => {// Add tag on click
+                        e.stopPropagation();
+                        addTag(tag);
+                    })
+                    filter.results.append(elTag);
+                }
+            }
+            else { 
+                if(!tags[filterNames].includes(elemnt)){
+                    tags[filterNames].push(elemnt)
+                    stateTags.push(elemnt)
+                    name = elemnt
+                    const tag = new Tag(name, filter.name);
+                    const elTag = tag.renderLi();
+                    if (filter.input.value.length > 0 && !tag.name.includes(filter.input.value.toLowerCase())) return;// Escape search result
+                    elTag.addEventListener('click', (e) => {// Add tag on click
+                        e.stopPropagation();
+                        addTag(tag);
+                    })
+                    filter.results.append(elTag);
+                }
+             }
+            //if (tagIsActive(tag, stateTags)) return;// Escape active tags
+            
         });
-        filter.results.append(elTag);
     });
-    if (filter.results.children.length > 0) 
+
+    if (filter.results.children.length > 0)
         filter.results.style.display = '';
 }
+function tagIsActive (tag, stateTags) {
+    const id = stateTags.findIndex((item) =>
+                         item.name == tag.name && item.type == tag.type );
+                         console.log(id)
+    if (id >= 0) return true;
+    return false;
+}
+function checkStateTags (filtered, tags, stateTags) {
+    updateAvailableTags(filtered, tags);
+    const stateTagsLength = stateTags.length;
+    stateTags.forEach((tag, key) => {
+        if (!tags[tag.type].includes(tag.name)) stateTags.splice(key, 1);
+    });
+    if (stateTagsLength != stateTags.length) renderTags();// Rerender on change
+}
 
-
+function updateAvailableTags (recipes , tags) {
+    console.log(tags)
+    // Reset tags
+    tags.ingredients = [];
+    tags.ustensils = [];
+    tags.appliances = [];
+    // Set new tags
+    recipes.forEach((recipe) => {
+        console.log(recipe.ingredients)
+        recipe.ingredients.forEach((ingredient) => {
+            console.log(ingredient)
+            console.log(tags.ingredients)
+            if (!tags.ingredients.includes(ingredient.ingredient)) 
+                tags.ingredients.push(ingredient.ingredient);
+        });
+        recipe.ustensils.forEach((ustensil) => {
+            if (!tags.ustensils.includes(ustensil)) tags.ustensils.push(ustensil);
+        });
+        if (!tags.appliances.includes(recipe.appliances)) tags.appliances.push(recipe.appliances);
+    });
+}
 
 
 
@@ -114,24 +197,35 @@ function  renderFilter (filter) {
 
 
 async function init() {
+    let stateTags = [];
+    let tags = {
+        ingredients: [],
+        ustensils: [],
+        appliances: []
+    }
+    let filtred = []
     renderRecipes(recipesData);
+    filtred = recipesData;
+    console.log(filtred)
     const search= document.querySelector('[data-search]');
     search.addEventListener("keyup", ()=>{
       
-        const tab = applyFilterRecipes(recipesData)
-        console.log(tab)     
+        const tab = applyFilterRecipes(recipesData, tags, stateTags)
+        console.log(tab) 
+        filtred = tab;    
         renderRecipes(tab)
+        console.log(filtred)
     })
+    
     let  filters= {
         ingredients: new DomFilter(document.querySelector('[data-filter="ingredients"]')),
-        appliances: new DomFilter(document.querySelector('[data-filter="appliances"]')),
+        appliancess: new DomFilter(document.querySelector('[data-filter="appliances"]')),
         ustensils: new DomFilter(document.querySelector('[data-filter="ustensils"]'))
     }
     for (const [, filter] of Object.entries(filters)) {
-        console.log(filter)
         filter.label.addEventListener('click', (e) => {// Active state
             console.log("hello")
-            activeIn(filter);
+            activeIn(filtred, filter, tags, stateTags);
         });
         filter.expand.addEventListener('click', (e) => {// Expand state
             toggle(filter);
