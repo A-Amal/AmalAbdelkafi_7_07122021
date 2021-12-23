@@ -3,7 +3,7 @@ export default class Tag{
         this.name = name;
         this.type = type;
     }
-    renderTag(){
+    renderTag () {
         const elementTag = document.createElement('span');
         elementTag.classList.add('tag');
         elementTag.innerText = this.name;
