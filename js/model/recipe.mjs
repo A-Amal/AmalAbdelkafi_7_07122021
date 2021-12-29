@@ -8,7 +8,8 @@ export default class Recipe{
         this.servings = data.servings;
         this.time = data.time;
         this.description = data.description;
-        this.appliance = data.appliance;
+        this.appliances = [];
+        data.appliances.forEach((appliance) => this.appliances.push(appliance.toLowerCase()));
         this.ustensils = [];
         data.ustensils.forEach((ustensil) => this.ustensils.push(ustensil.toLowerCase()));
         this.ingredients = [];
