@@ -95,7 +95,6 @@ function toggle(filter, tags) {
     //filter.results.style.display = 'none';
     filter.results.innerHTML = ''
     // Focus input on open
-    console.log(filter.container.classList.contains('expanded'))
     if (filter.container.classList.contains('expanded')) filter.input.focus();
 }
 
@@ -172,7 +171,6 @@ function checkStateTags(filtered, tags, stateTags) {
 }
 function filterTags(filtred, stateTags) {
       stateTags.forEach((tag) => {
-          console.log(tag)
         filtred = filtred.filter((recipe) => recipe.tagAvailable(tag));
     });
     return filtred;
@@ -230,7 +228,6 @@ function removeTag(stateTags, tag, filtred, tags) {
             const elTag = e.target.parentNode.parentNode
             domTags.removeChild(elTag)
         })
-        console.log(stateTags)
         const filter = undefined
         renderRecipes(filtred);
         checkStateTags(filtred, tags, stateTags)
