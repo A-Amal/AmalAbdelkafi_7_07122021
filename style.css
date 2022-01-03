@@ -306,3 +306,80 @@ input:focus{
     width: 50%;
     margin-left: 5px;
 }
+
+/*media*/
+@media all and (min-width: 910px) and (max-width: 1170px){
+  .card{
+    width: 330px;
+  }
+}
+@media all and (min-width: 700px) and (max-width: 910px){
+  .card{
+    width: 380px;
+  }
+  .recipes{
+    justify-content: space-around;
+  }
+  .combobox-control-label{
+    font-size: 12px;
+  }
+}
+@media all and (min-width: 410px) and  (max-width: 700px){
+  .recipes{
+    justify-content: center;
+  }
+  .search-filters{
+    flex-wrap: wrap;
+   
+  }
+  .combobox{
+    margin-bottom: 20px;
+    
+  }
+  .combobox.active:not(.expanded){
+    width: 280px;
+  }
+  .active{
+    z-index: 12;
+  }
+  .combobox-control-label, .combobox-control-input{
+    font-weight: 300;
+  }
+  
+  li{
+    font-size: 14px !important;
+  }
+}
+@media all and (max-width: 410px) {
+  .form-control{
+    font-size: 10px;
+  }
+  .card{
+    width: 330px;
+  }
+  .recipes{
+    justify-content: center;
+  }
+  .search-filters{
+    flex-wrap: wrap;
+   
+  }
+  .combobox{
+    margin-bottom: 20px;
+    
+  }
+  
+  .combobox.active:not(.expanded){
+    width: 280px;
+  }
+  .active{
+    z-index: 12;
+  }
+  .combobox-control-label, .combobox-control-input{
+    font-weight: 100;
+  }
+  
+  li{
+    font-size: 14px !important;
+  }
+}

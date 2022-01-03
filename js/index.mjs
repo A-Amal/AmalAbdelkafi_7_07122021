@@ -11,18 +11,17 @@ async function fetchData(recipesData) {
     });
     return recipesTab
 }
-function renderTags(tag, stateTags, filtred) {
+function renderTags(tag, stateTags, filtred, tags) {
     const tagsClasses = {
         ingredients: 'primary',
         appliances: 'success',
         ustensils: 'danger'
     }
     const domTags = document.querySelector('[data-filter-tags]')
-    console.log(tag)
     const elTag = tag.renderTag();
     domTags.append(elTag);
     elTag.classList.add(tagsClasses[tag.type])
-    elTag.querySelector('button').addEventListener('click', (e) => removeTag(stateTags, tag, filtred));// Remove tag on click
+    elTag.querySelector('button').addEventListener('click', (e) => removeTag(stateTags, tag, filtred, tags));// Remove tag on click
 }
 function renderRecipes(tab) {
     const recipesDom = document.querySelector(".recipes")
@@ -41,8 +40,6 @@ function filterSearch(term, recipes) {
     // Search into name, description, appliances, ingredients name, ustensils
     //const t0 = performance.now(), q = recipes.length;
     //const term = search.value.toLowerCase();
-    console.log(term)
-    console.log(recipes)
     recipes = recipes.filter((recipe) => {
         if (recipe.name.includes(term)) {
             return true;
@@ -66,8 +63,6 @@ function filterSearch(term, recipes) {
 }
 
 function activeIn(filtred, filter, tags, stateTags, stateFilter) {
-    console.log(stateFilter)
-    console.log(filter)
     let tab = [stateFilter.ingredients, stateFilter.ustensils, stateFilter.appliances]
     for (let fil of tab) {
         activeOut(fil)
@@ -86,7 +81,6 @@ function activeIn(filtred, filter, tags, stateTags, stateFilter) {
     });
 }
 function activeOut(filter) {
-    console.log(filter)
     filter.container.classList.remove('active');
     filter.container.classList.remove('expanded');
     filter.label.style.display = '';
@@ -104,14 +98,7 @@ function toggle(filter, tags) {
     console.log(filter.container.classList.contains('expanded'))
     if (filter.container.classList.contains('expanded')) filter.input.focus();
 }
-function clickOutside(e, filter, stateFilter) {
-    let clickTarget = e.target;
-    do {
-        if (clickTarget == stateFilter.container) return;
-        clickTarget = clickTarget.parentNode;
-    } while (clickTarget);
-    activeOut(filter);
-}
+
 function renderFilter(filtred, filter, tags, stateTags) {
     tags.ingredients = [];
     tags.ustensils = [];
@@ -149,7 +136,6 @@ function renderFilter(filtred, filter, tags, stateTags) {
                     const tag = new Tag(name, filter.name);
                     const elTag = tag.renderLi();
                     if (filter.input.value.length > 0 && !tag.name.includes(filter.input.value.toLowerCase())) {
-                        console.log(filter.input.value)
                         return
                     };// Escape search result
                     elTag.addEventListener('click', (e) => {// Add tag on click
@@ -186,6 +172,7 @@ function checkStateTags(filtered, tags, stateTags) {
 }
 function filterTags(filtred, stateTags) {
       stateTags.forEach((tag) => {
+          console.log(tag)
         filtred = filtred.filter((recipe) => recipe.tagAvailable(tag));
     });
     return filtred;
@@ -228,24 +215,22 @@ function addTag(tag, stateTags, tags, filtred, filter) {
     if (id >= 0) {
         stateTags.push(tag);
         tags[tag.type].splice(id, 1)
-        renderTags(tag, stateTags, filtred);
+        renderTags(tag, stateTags, filtred, tags);
         const tabFiltred = applyFilterRecipes(filtred, tags, stateTags, filter)
         renderRecipes(tabFiltred);
     }
 }
-function removeTag(stateTags, tag, filtred) {
+function removeTag(stateTags, tag, filtred, tags) {
     const id = stateTags.findIndex((item) => item.name == tag.name && item.type == tag.type);
-    console.log(id)
     if (id >= 0) {
         stateTags.splice(id, 1);
         const domTags = document.querySelector('[data-filter-tags]')
         domTags.addEventListener("click",(e)=>{
             const elTag = e.target.parentNode.parentNode
-            console.log(elTag)
-            console.log(tag)
-            domTags.remove(elTag)
+            domTags.removeChild(elTag)
         })
         renderRecipes(filtred);
+        checkStateTags(filtred, tags, stateTags)
     }
 }
 
