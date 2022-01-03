@@ -227,6 +227,7 @@ input:focus{
     color: #FFFFFF;
     font-weight: 700;
     font-size: 0.875rem;
+    margin-right: 10px;
   }
   .tag-primary {
     background-color: #3282F7;

@@ -11,7 +11,7 @@ async function fetchData(recipesData) {
     });
     return recipesTab
 }
-function  renderTags (tag, stateTags, filtred) {   
+function renderTags(tag, stateTags, filtred) {
     const tagsClasses = {
         ingredients: 'primary',
         appliances: 'success',
@@ -26,8 +26,8 @@ function  renderTags (tag, stateTags, filtred) {
 }
 function renderRecipes(tab) {
     const recipesDom = document.querySelector(".recipes")
-    recipesDom.innerHTML="";
-    const norecipes= document.querySelector('[data-norecipes]');
+    recipesDom.innerHTML = "";
+    const norecipes = document.querySelector('[data-norecipes]');
     if (tab.length == 0) {
         norecipes.style.display = '';
     }
@@ -36,7 +36,7 @@ function renderRecipes(tab) {
         recipesDom.appendChild(dom)
     });
 }
- 
+
 function filterSearch(term, recipes) {
     // Search into name, description, appliances, ingredients name, ustensils
     //const t0 = performance.now(), q = recipes.length;
@@ -53,7 +53,7 @@ function filterSearch(term, recipes) {
         if (recipe.appliances.includes(term)) {
             return true;
         }
-        if (!!recipe.ingredients.find((ingredient) =>ingredient.name.includes(term))) {
+        if (!!recipe.ingredients.find((ingredient) => ingredient.name.includes(term))) {
             return true;
         }
         if (!!recipe.ustensils.find((ustensil) => ustensil.includes(term))) {
@@ -65,13 +65,11 @@ function filterSearch(term, recipes) {
     return recipes;
 }
 
-function activeIn (filtred, filter, tags, stateTags, stateFilter) {  
+function activeIn(filtred, filter, tags, stateTags, stateFilter) {
     console.log(stateFilter)
     console.log(filter)
     let tab = [stateFilter.ingredients, stateFilter.ustensils, stateFilter.appliances]
-    console.log(tab)
-    for(let fil of tab){
-        console.log(typeof(fil))
+    for (let fil of tab) {
         activeOut(fil)
     }
     const filterActive = filter;
@@ -81,14 +79,13 @@ function activeIn (filtred, filter, tags, stateTags, stateFilter) {
     //filterActive.input.focus();
     renderFilter(filtred, filterActive, tags, stateTags);
     const domRecipes = document.querySelector('[data-recipes]')
-    domRecipes.addEventListener("click", ()=>{
-        for(let fil of tab){
-            console.log(typeof(fil))
+    domRecipes.addEventListener("click", () => {
+        for (let fil of tab) {
             activeOut(fil)
         }
     });
 }
-function activeOut (filter) {
+function activeOut(filter) {
     console.log(filter)
     filter.container.classList.remove('active');
     filter.container.classList.remove('expanded');
@@ -97,17 +94,17 @@ function activeOut (filter) {
     filter.input.value = "";
     filter.results.style.display = 'none';
 }
-function toggle (filter, tags) {
+function toggle(filter, tags) {
     if (!filter) activeIn(filtred, filter, tags, stateTags);
     //Toggle visual expanded state
     //filter.container.classList.toggle('expanded');
     //filter.results.style.display = 'none';
-    filter.results.innerHTML=''
+    filter.results.innerHTML = ''
     // Focus input on open
     console.log(filter.container.classList.contains('expanded'))
     if (filter.container.classList.contains('expanded')) filter.input.focus();
 }
-function clickOutside (e, filter, stateFilter) {
+function clickOutside(e, filter, stateFilter) {
     let clickTarget = e.target;
     do {
         if (clickTarget == stateFilter.container) return;
@@ -127,9 +124,9 @@ function renderFilter(filtred, filter, tags, stateTags) {
         let name;
         item[filterNames].forEach(elemnt => {
             let filterName = filterNames.substring(0, filterNames.length - 1)
-            if (filterName == "ingredient" ) { 
-                if(!tags[filterNames].includes(elemnt[filterName])){
-                    name =elemnt.name;
+            if (filterName == "ingredient") {
+                if (!tags[filterNames].includes(elemnt[filterName])) {
+                    name = elemnt.name;
                     tags[filterNames].push(elemnt.name)
                     const tag = new Tag(name, filter.name);
                     const elTag = tag.renderLi();
@@ -138,15 +135,15 @@ function renderFilter(filtred, filter, tags, stateTags) {
                         e.stopPropagation();
                         addTag(tag, stateTags, tags, filtred, filter);
                     })
-                    if(filterResult.indexOf(tag.name) === -1){
+                    if (filterResult.indexOf(tag.name) === -1) {
                         filterResult.push(tag.name)
                         filter.results.append(elTag);
                     }
                     if (tagIsActive(tag, stateTags)) return;// Escape active tags
                 }
             }
-            else { 
-                if(!tags[filterNames].includes(elemnt)){
+            else {
+                if (!tags[filterNames].includes(elemnt)) {
                     tags[filterNames].push(elemnt)
                     name = elemnt
                     const tag = new Tag(name, filter.name);
@@ -159,27 +156,27 @@ function renderFilter(filtred, filter, tags, stateTags) {
                         e.stopPropagation();
                         addTag(tag, stateTags, tags, filtred, filter);
                     })
-                    if(filterResult.indexOf(tag.name) === -1){
+                    if (filterResult.indexOf(tag.name) === -1) {
                         filterResult.push(tag.name)
                         filter.results.append(elTag);
                     }
                     if (tagIsActive(tag, stateTags)) return;// Escape active tags
                 }
-             }
-            
-            
+            }
+
+
         });
     });
     if (filter.results.children.length > 0)
         filter.results.style.display = '';
 }
-function tagIsActive (tag, stateTags) {
+function tagIsActive(tag, stateTags) {
     const id = stateTags.findIndex((item) =>
-                         item.name == tag.name && item.type == tag.type );
+        item.name == tag.name && item.type == tag.type);
     if (id >= 0) return true;
     return false;
 }
-function checkStateTags (filtered, tags, stateTags) {
+function checkStateTags(filtered, tags, stateTags) {
     updateAvailableTags(filtered, tags);
     const stateTagsLength = stateTags.length;
     stateTags.forEach((tag, key) => {
@@ -187,19 +184,15 @@ function checkStateTags (filtered, tags, stateTags) {
     });
     if (stateTagsLength != stateTags.length) renderTags();// Rerender on change
 }
-function  filterTags(filtred, stateTags) {
-    console.log(stateTags)
-    stateTags.forEach((tag) => {
+function filterTags(filtred, stateTags) {
+      stateTags.forEach((tag) => {
         filtred = filtred.filter((recipe) => recipe.tagAvailable(tag));
     });
     return filtred;
 }
 
-
-function applyFilterRecipes (recipes, tags, stateTags, filter) {
+function applyFilterRecipes(recipes, tags, stateTags, filter) {
     let filtred = [];
-    console.log(stateTags)
-    console.log(tags)
     if (search.value.length < 3) filtred = recipes;
     else {
         filtred = filterSearch(search.value, recipes);
@@ -212,7 +205,7 @@ function applyFilterRecipes (recipes, tags, stateTags, filter) {
     return filtred;
 }
 
-function updateAvailableTags (filtred , tags) {
+function updateAvailableTags(filtred, tags) {
     // Reset tags
     tags.ingredients = [];
     tags.ustensils = [];
@@ -220,7 +213,7 @@ function updateAvailableTags (filtred , tags) {
     // Set new tags
     filtred.forEach((recipe) => {
         recipe.ingredients.forEach((ingredient) => {
-            if (!tags.ingredients.includes(ingredient.ingredient)) 
+            if (!tags.ingredients.includes(ingredient.ingredient))
                 tags.ingredients.push(ingredient.ingredient);
         });
         recipe.ustensils.forEach((ustensil) => {
@@ -230,27 +223,31 @@ function updateAvailableTags (filtred , tags) {
     });
 }
 
-function addTag (tag, stateTags, tags ,filtred, filter) {
+function addTag(tag, stateTags, tags, filtred, filter) {
     const id = tags[tag.type].findIndex((item) => item === tag.name);
     if (id >= 0) {
         stateTags.push(tag);
         tags[tag.type].splice(id, 1)
         renderTags(tag, stateTags, filtred);
-        const tabFiltred = applyFilterRecipes (filtred, tags, stateTags, filter)
+        const tabFiltred = applyFilterRecipes(filtred, tags, stateTags, filter)
         renderRecipes(tabFiltred);
     }
 }
-function  removeTag (stateTags, tag, filtred) {
-    const id = stateTags.findIndex((item) => item.name == tag.name && item.type == tag.type );
+function removeTag(stateTags, tag, filtred) {
+    const id = stateTags.findIndex((item) => item.name == tag.name && item.type == tag.type);
     console.log(id)
     if (id >= 0) {
         stateTags.splice(id, 1);
-        renderTags(stateTags);
+        const domTags = document.querySelector('[data-filter-tags]')
+        domTags.addEventListener("click",(e)=>{
+            const elTag = e.target.parentNode.parentNode
+            console.log(elTag)
+            console.log(tag)
+            domTags.remove(elTag)
+        })
         renderRecipes(filtred);
     }
 }
-
-
 
 async function init() {
     let stateTags = [];
@@ -263,37 +260,34 @@ async function init() {
     const recipesTab = await fetchData(recipesData);
     renderRecipes(recipesTab);
     filtred = recipesTab;
-    const search= document.querySelector('[data-search]');
-    search.addEventListener("keyup", ()=>{
+    const search = document.querySelector('[data-search]');
+    search.addEventListener("keyup", () => {
         const tab = applyFilterRecipes(recipesTab, tags, stateTags)
-        filtred = tab;    
+        filtred = tab;
         renderRecipes(tab)
     })
-    
-    let  filters= {
+
+    let filters = {
         ingredients: new DomFilter(document.querySelector('[data-filter="ingredients"]')),
         appliances: new DomFilter(document.querySelector('[data-filter="appliances"]')),
         ustensils: new DomFilter(document.querySelector('[data-filter="ustensils"]'))
     }
     for (const [, filter] of Object.entries(filters)) {
         filter.label.addEventListener('click', (e) => {
-            console.log("active")
-            console.log(filter)
             const stateFilter = filters
             activeIn(filtred, filter, tags, stateTags, stateFilter);
         });
         filter.expand.addEventListener('click', (e) => {
-            console.log("toggle")
             toggle(filter);
-            
+
         });
-        filter.input.addEventListener('keyup',(e) => {
+        filter.input.addEventListener('keyup', (e) => {
             renderFilter(filtred, filter, tags, stateTags)
         });// Filter input change
-        
+
     }
 }
-    
+
 
 
 init();
