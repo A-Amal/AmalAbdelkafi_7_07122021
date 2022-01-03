@@ -27,7 +27,7 @@ export default class Recipe{
     tagAvailable (tag) {
         if (tag.type == 'ingredients') return this.ingredients.find((ingredient) => ingredient.name == tag.name);
         if (tag.type == 'ustensils') return this.ustensils.includes(tag.name);
-        if (tag.type == 'appliances') return this.appliances == tag.name;
+        if (tag.type == 'appliances') return this.appliances.includes(tag.name);
     }
 
     /**

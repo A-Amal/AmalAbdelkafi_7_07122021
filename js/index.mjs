@@ -188,6 +188,7 @@ function applyFilterRecipes(recipes, tags, stateTags, filter) {
     // Clear invalid active tags
     filtred = filterTags(filtred, stateTags);// Tags filter
     updateAvailableTags(filtred, tags);
+   
     if (filter) renderFilter(filtred, filter, tags, stateTags);// Rerender on active
     return filtred;
 }
@@ -229,6 +230,8 @@ function removeTag(stateTags, tag, filtred, tags) {
             const elTag = e.target.parentNode.parentNode
             domTags.removeChild(elTag)
         })
+        console.log(stateTags)
+        const filter = undefined
         renderRecipes(filtred);
         checkStateTags(filtred, tags, stateTags)
     }
