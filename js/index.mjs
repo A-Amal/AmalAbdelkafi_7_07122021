@@ -30,36 +30,43 @@ function renderRecipes(tab) {
     if (tab.length == 0) {
         norecipes.style.display = '';
     }
-    tab.forEach(element => {
-        const dom = element.render()
-        recipesDom.appendChild(dom)
-    });
+    for(let i= 0; i<tab.length; i++){
+        const dom = tab[i].render();
+        recipesDom.appendChild(dom);
+    }
 }
 
 function filterSearch(term, recipes) {
-    // Search into name, description, appliances, ingredients name, ustensils
-    //const t0 = performance.now(), q = recipes.length;
-    //const term = search.value.toLowerCase();
-    recipes = recipes.filter((recipe) => {
-        if (recipe.name.includes(term)) {
-            return true;
+     const filtered = [];
+        for (let i = 0; i < recipes.length; i++) {
+            const recipe = recipes[i];
+            if (recipe.name.includes(term)) filtered.push(recipe);
+            else if (recipe.description.toLowerCase().includes(term)) filtered.push(recipe);
+            else if (recipe.appliances.includes(term)) filtered.push(recipe);
+            else {
+                let find = false;
+                let index = 0;
+                while (index < recipe.ingredients.length) {
+                    const ingredient = recipe.ingredients[index].name;
+                    if (find = ingredient.includes(term)) {
+                        filtered.push(recipe);
+                        break;
+                    }
+                    index++;
+                }
+                if (find) continue;
+                index = 0;
+                while (index < recipe.ustensils.length) {
+                    const ustensil = recipe.ustensils[index];
+                    if (find = ustensil.includes(term)) {
+                        filtered.push(recipe);
+                        break;
+                    }
+                    index++;
+                }
+            }
         }
-        if (recipe.description.toLowerCase().includes(term)) {
-            return true;
-        }
-        if (recipe.appliances.includes(term)) {
-            return true;
-        }
-        if (!!recipe.ingredients.find((ingredient) => ingredient.name.includes(term))) {
-            return true;
-        }
-        if (!!recipe.ustensils.find((ustensil) => ustensil.includes(term))) {
-            return true;
-        }
-        return false;
-    });
-    //const t1 = performance.now(); console.log(`Search time ${t1 - t0} ms | ${(t1 - t0) / q} per recipe`);
-    return recipes;
+        return filtered;
 }
 
 function activeIn(filtred, filter, tags, stateTags, stateFilter) {
@@ -71,7 +78,6 @@ function activeIn(filtred, filter, tags, stateTags, stateFilter) {
     filterActive.container.classList.add('active');
     filterActive.label.style.display = 'none';
     filterActive.input.style.display = '';
-    //filterActive.input.focus();
     renderFilter(filtred, filterActive, tags, stateTags);
     const domRecipes = document.querySelector('[data-recipes]')
     domRecipes.addEventListener("click", () => {
@@ -90,9 +96,6 @@ function activeOut(filter) {
 }
 function toggle(filter, tags) {
     if (!filter) activeIn(filtred, filter, tags, stateTags);
-    //Toggle visual expanded state
-    //filter.container.classList.toggle('expanded');
-    //filter.results.style.display = 'none';
     filter.results.innerHTML = ''
     // Focus input on open
     if (filter.container.classList.contains('expanded')) filter.input.focus();
@@ -182,14 +185,9 @@ function applyFilterRecipes(recipes, tags, stateTags, filter) {
     else {
         filtred = filterSearch(search.value, recipes);
     }// Search filter
-    //checkStateTags (filtered, tags, stateTags)
     // Clear invalid active tags
-    console.log(stateTags)
-    
     filtred = filterTags(filtred, stateTags);// Tags filter
-    console.log(filtred)
     updateAvailableTags(filtred, tags);
-    console.log(tags)
     if (filter) renderFilter(filtred, filter, tags, stateTags);// Rerender on active
     return filtred;
 }
@@ -199,19 +197,18 @@ function updateAvailableTags(filtred, tags) {
     tags.ingredients = [];
     tags.ustensils = [];
     tags.appliances = [];
-    console.log(tags)
     // Set new tags
     filtred.forEach((recipe) => {
         recipe.ingredients.forEach((ingredient) => {
-            //if (!tags.ingredients.includes(ingredient.ingredient))
+            if (!tags.ingredients.includes(ingredient.ingredient))
                 tags.ingredients.push(ingredient.ingredient);
         });
         recipe.ustensils.forEach((ustensil) => {
-           // if (!tags.ustensils.includes(ustensil)) 
-           tags.ustensils.push(ustensil);
+            if (!tags.ustensils.includes(ustensil)) 
+                tags.ustensils.push(ustensil);
         });
-        //if (!tags.appliances.includes(recipe.appliances)) 
-        tags.appliances.push(recipe.appliances);
+            if (!tags.appliances.includes(recipe.appliances)) 
+                tags.appliances.push(recipe.appliances);
     });
 }
 
