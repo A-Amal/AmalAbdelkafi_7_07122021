@@ -37,9 +37,6 @@ function renderRecipes(tab) {
 }
 
 function filterSearch(term, recipes) {
-    // Search into name, description, appliances, ingredients name, ustensils
-    //const t0 = performance.now(), q = recipes.length;
-    //const term = search.value.toLowerCase();
     recipes = recipes.filter((recipe) => {
         if (recipe.name.includes(term)) {
             return true;
@@ -58,7 +55,6 @@ function filterSearch(term, recipes) {
         }
         return false;
     });
-    //const t1 = performance.now(); console.log(`Search time ${t1 - t0} ms | ${(t1 - t0) / q} per recipe`);
     return recipes;
 }
 
@@ -71,7 +67,6 @@ function activeIn(filtred, filter, tags, stateTags, stateFilter) {
     filterActive.container.classList.add('active');
     filterActive.label.style.display = 'none';
     filterActive.input.style.display = '';
-    //filterActive.input.focus();
     renderFilter(filtred, filterActive, tags, stateTags);
     const domRecipes = document.querySelector('[data-recipes]')
     domRecipes.addEventListener("click", () => {
@@ -91,8 +86,6 @@ function activeOut(filter) {
 function toggle(filter, tags) {
     if (!filter) activeIn(filtred, filter, tags, stateTags);
     //Toggle visual expanded state
-    //filter.container.classList.toggle('expanded');
-    //filter.results.style.display = 'none';
     filter.results.innerHTML = ''
     // Focus input on open
     if (filter.container.classList.contains('expanded')) filter.input.focus();
@@ -182,7 +175,6 @@ function applyFilterRecipes(recipes, tags, stateTags, filter) {
     else {
         filtred = filterSearch(search.value, recipes);
     }// Search filter
-    //checkStateTags (filtered, tags, stateTags)
     // Clear invalid active tags
     console.log(stateTags)
     
@@ -203,14 +195,14 @@ function updateAvailableTags(filtred, tags) {
     // Set new tags
     filtred.forEach((recipe) => {
         recipe.ingredients.forEach((ingredient) => {
-            //if (!tags.ingredients.includes(ingredient.ingredient))
+            if (!tags.ingredients.includes(ingredient.ingredient))
                 tags.ingredients.push(ingredient.ingredient);
         });
         recipe.ustensils.forEach((ustensil) => {
-           // if (!tags.ustensils.includes(ustensil)) 
+            if (!tags.ustensils.includes(ustensil)) 
            tags.ustensils.push(ustensil);
         });
-        //if (!tags.appliances.includes(recipe.appliances)) 
+            if (!tags.appliances.includes(recipe.appliances)) 
         tags.appliances.push(recipe.appliances);
     });
 }

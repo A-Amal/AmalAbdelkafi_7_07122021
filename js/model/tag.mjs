@@ -15,7 +15,6 @@ export default class Tag{
     }
     renderLi () {
         const elementListTag = document.createElement('li');
-        //elementListTag.innerText = this.name[0].toUpperCase() + this.name.substring(1 , this.name.length);// UCFirst
         elementListTag.innerText = this.name
         return elementListTag;
     }
