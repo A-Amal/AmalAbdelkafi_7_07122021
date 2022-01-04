@@ -251,6 +251,7 @@ input:focus{
 /*css Card recipes
 */
 .recipes{
+    width: 100%;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;

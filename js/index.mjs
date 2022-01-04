@@ -184,9 +184,12 @@ function applyFilterRecipes(recipes, tags, stateTags, filter) {
     }// Search filter
     //checkStateTags (filtered, tags, stateTags)
     // Clear invalid active tags
+    console.log(stateTags)
+    
     filtred = filterTags(filtred, stateTags);// Tags filter
+    console.log(filtred)
     updateAvailableTags(filtred, tags);
-   
+    console.log(tags)
     if (filter) renderFilter(filtred, filter, tags, stateTags);// Rerender on active
     return filtred;
 }
@@ -196,16 +199,19 @@ function updateAvailableTags(filtred, tags) {
     tags.ingredients = [];
     tags.ustensils = [];
     tags.appliances = [];
+    console.log(tags)
     // Set new tags
     filtred.forEach((recipe) => {
         recipe.ingredients.forEach((ingredient) => {
-            if (!tags.ingredients.includes(ingredient.ingredient))
+            //if (!tags.ingredients.includes(ingredient.ingredient))
                 tags.ingredients.push(ingredient.ingredient);
         });
         recipe.ustensils.forEach((ustensil) => {
-            if (!tags.ustensils.includes(ustensil)) tags.ustensils.push(ustensil);
+           // if (!tags.ustensils.includes(ustensil)) 
+           tags.ustensils.push(ustensil);
         });
-        if (!tags.appliances.includes(recipe.appliances)) tags.appliances.push(recipe.appliances);
+        //if (!tags.appliances.includes(recipe.appliances)) 
+        tags.appliances.push(recipe.appliances);
     });
 }
 
