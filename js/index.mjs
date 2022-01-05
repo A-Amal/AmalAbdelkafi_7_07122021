@@ -37,6 +37,7 @@ function renderRecipes(tab) {
 }
 
 function filterSearch(term, recipes) {
+    //const t0 = performance.now(), q = recipes.length;
      const filtered = [];
         for (let i = 0; i < recipes.length; i++) {
             const recipe = recipes[i];
@@ -66,6 +67,7 @@ function filterSearch(term, recipes) {
                 }
             }
         }
+        //const t1 = performance.now(); console.log(`Search time ${t1 - t0} ms | ${(t1 - t0) / q} per recipe`);
         return filtered;
 }
 
