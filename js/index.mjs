@@ -37,6 +37,7 @@ function renderRecipes(tab) {
 }
 
 function filterSearch(term, recipes) {
+    const t0 = performance.now(), q = recipes.length;
     recipes = recipes.filter((recipe) => {
         if (recipe.name.includes(term)) {
             return true;
@@ -55,6 +56,7 @@ function filterSearch(term, recipes) {
         }
         return false;
     });
+    const t1 = performance.now(); console.log(`Search time ${t1 - t0} ms | ${(t1 - t0) / q} per recipe`);
     return recipes;
 }
 
@@ -176,12 +178,8 @@ function applyFilterRecipes(recipes, tags, stateTags, filter) {
         filtred = filterSearch(search.value, recipes);
     }// Search filter
     // Clear invalid active tags
-    console.log(stateTags)
-    
     filtred = filterTags(filtred, stateTags);// Tags filter
-    console.log(filtred)
     updateAvailableTags(filtred, tags);
-    console.log(tags)
     if (filter) renderFilter(filtred, filter, tags, stateTags);// Rerender on active
     return filtred;
 }
@@ -191,7 +189,6 @@ function updateAvailableTags(filtred, tags) {
     tags.ingredients = [];
     tags.ustensils = [];
     tags.appliances = [];
-    console.log(tags)
     // Set new tags
     filtred.forEach((recipe) => {
         recipe.ingredients.forEach((ingredient) => {
