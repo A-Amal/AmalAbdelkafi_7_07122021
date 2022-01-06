@@ -36,10 +36,11 @@ ul, ol, li {
 }
 input{
     background-color: transparent !important;
-    border: none;
+    border: none !important;
     position: relative;
     left: 22px;
 }
+
 input:focus{
     border: none;
 }
