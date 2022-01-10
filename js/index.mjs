@@ -233,7 +233,7 @@ function removeTag(stateTags, tag, filtred, tags) {
             const elTag = e.target.parentNode.parentNode
             domTags.removeChild(elTag)
         })
-        const filter = undefined
+        //const filter = undefined
         renderRecipes(filtred);
         checkStateTags(filtred, tags, stateTags)
     }
