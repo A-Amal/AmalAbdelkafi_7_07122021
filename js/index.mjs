@@ -228,12 +228,11 @@ function removeTag(stateTags, tag, filtred, tags) {
     const id = stateTags.findIndex((item) => item.name == tag.name && item.type == tag.type);
     if (id >= 0) {
         stateTags.splice(id, 1);
-        const domTags = document.querySelector('[data-filter-tags]')
+        const domTags = document.querySelector('.tag')
         domTags.addEventListener("click",(e)=>{
-            const elTag = e.target.parentNode.parentNode
-            domTags.removeChild(elTag)
+            const elTag = e.currentTarget
+            domTags.remove(elTag)
         })
-        //const filter = undefined
         renderRecipes(filtred);
         checkStateTags(filtred, tags, stateTags)
     }
